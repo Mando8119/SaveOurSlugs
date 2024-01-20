@@ -80,8 +80,6 @@ void _call() async {
   }
 }
 
-
-
 void _sendSMS() async {
   await _requestAllPermissions();
   var smsStatus = await Permission.sms.status;
@@ -133,13 +131,11 @@ void _sendSMS() async {
           const SizedBox(height: 30),
           ElevatedButton(
             style: style,
-            onPressed: _requestAllPermissions,
+            onPressed: _requestAllPermissions,//set here for now but should be moved to first ever button of app
             child: const Text('----------'),
           ),
         ],
       ),
     );
-  }
-
-      
+  }   
   }
