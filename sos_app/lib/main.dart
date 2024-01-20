@@ -35,44 +35,74 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   int counter = 0;
+  String place = 'even';
   // ignore: unused_element
   void _incrementCounter() {
     setState(() {
       counter++;
+      if (counter % 2 == 0){
+        place = 'even';
+      }else{place = 'odd';}
     });
   }
 
-  // Function to send SMS
-  Future<void> _requestPermission() async {
-  var status = await Permission.sms.status;
-    if (!status.isGranted) {
-      await Permission.sms.request();
-    }
-  }
+Future<void> _requestAllPermissions() async {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.sms,
+      Permission.phone,
+      // Add other permissions you need here
+    ].request();
 
-  void _sendSMS() async {
-    _incrementCounter();
-    await _requestPermission();
-    var smsStatus = await Permission.sms.status;
-    if (smsStatus.isGranted) {
-      try {
-        await UssdPhoneCallSms().textMultiSMS(
-          recipientsList: ['+18312339795'], // Replace with actual phone number(s)
-          smsBody: 'Dumbass UI/UX mofo. This message was sent $counter times',
-        );
-        //ignore: avoid_print
-        print('Successful');
-      } catch (e) {
-        // Handle any errors here
-        // ignore: avoid_print
-        print('Error sending SMS: $e');
-      }
+    // Handle the permission request result
+    if (statuses[Permission.sms]!.isGranted && statuses[Permission.phone]!.isGranted) {
+      // All requested permissions are granted
+      print('All permissions granted');
     } else {
-      // Handle the case when permission is denied
-      // ignore: avoid_print
-      print('SMS permission denied');
+      // Handle the case where permissions are denied
+      print('One or more permissions denied');
     }
   }
+void _call() async {
+  await _requestAllPermissions();
+  var phoneStatus = await Permission.phone.status;
+  if (phoneStatus.isGranted) {
+    try {
+      await UssdPhoneCallSms().phoneCall(phoneNumber: '+15043305685');
+      // ignore: avoid_print
+      print('Phone call successful');
+    } catch (e) {
+      // ignore: avoid_print
+      print('Error making phone call: $e');
+    }
+  } else {
+    // ignore: avoid_print
+    print('Phone call permission denied');
+  }
+}
+
+
+
+void _sendSMS() async {
+  await _requestAllPermissions();
+  var smsStatus = await Permission.sms.status;
+  if (smsStatus.isGranted) {
+    _incrementCounter();
+    try {
+      await UssdPhoneCallSms().textMultiSMS(
+        recipientsList: ['+15043305685'], // Replace with actual phone number(s)
+        smsBody: 'This message was sent $counter times, that is an $place',
+      );
+      // ignore: avoid_print
+      print('Successful');
+    } catch (e) {
+      // ignore: avoid_print
+      print('Error sending SMS: $e');
+    }
+  } else {
+    // ignore: avoid_print
+    print('SMS permission denied');
+  }
+}
 
     @override
   Widget build(BuildContext context) {
@@ -85,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           ElevatedButton(
             style: style,
-            onPressed: () {},
+            onPressed: _call,
             child: const Text('----------'),
           ),
           const SizedBox(height: 30),
@@ -103,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
           const SizedBox(height: 30),
           ElevatedButton(
             style: style,
-            onPressed: () {},
+            onPressed: _requestAllPermissions,
             child: const Text('----------'),
           ),
         ],
