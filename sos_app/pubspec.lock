@@ -62,6 +62,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_background_video_recorder:
+    dependency: "direct main"
+    description:
+      name: flutter_background_video_recorder
+      sha256: "2fc2ff0f9618d2bdaa4052d921ca18ac45feec82ca84b9b1060ede256a10a3f4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.9+1"
   flutter_lints:
     dependency: "direct dev"
     description:
