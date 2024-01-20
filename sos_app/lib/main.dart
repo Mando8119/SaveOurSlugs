@@ -60,11 +60,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       floatingActionButtonLocation:
-          FloatingActionButtonLocation.centerFloat,
+          FloatingActionButtonLocation.miniStartFloat,
       floatingActionButton: Container(
-        height: 150,
-        width: 150,
-        alignment: Alignment.topCenter,
+        height: 67,
+        width: 300,
+        color: const Color.fromARGB(8, 3, 77, 237),
         margin: const EdgeInsets.all(10),
         child: ElevatedButton(
           onPressed: _sendSMS,
