@@ -115,8 +115,8 @@ class _MyHomePageState extends State<MyHomePage> {
               style: Theme.of(context).textTheme.headlineMedium,
             ),
               Text(
-                '$_multiplyer'
-                //: Theme.of(context).textTheme.headlineMedium,
+                '$_multiplyer',
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
           ],
         ),
