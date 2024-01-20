@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ussd_phone_call_sms/ussd_phone_call_sms.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -46,7 +48,9 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButtonLocation:
           FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Container(
-        height:300,
+        height: 150,
+        width: 150,
+        alignment: Alignment.topCenter,
         margin: const EdgeInsets.all(10),
         child: ElevatedButton(
           onPressed: () {},
@@ -61,12 +65,3 @@ class _MyHomePageState extends State<MyHomePage> {
 
       
   }
-
-  
-
-  
-
-  
-
-  
-  
