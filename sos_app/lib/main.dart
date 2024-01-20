@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Save Our Slugs',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 80, 33, 101)),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Save Our Slugs'),
@@ -75,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
     @override
   Widget build(BuildContext context) {
     final ButtonStyle style =
-        ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
+        ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 45));
 
     return Center(
       child: Column(
@@ -84,25 +84,25 @@ class _MyHomePageState extends State<MyHomePage> {
           ElevatedButton(
             style: style,
             onPressed: () {},
-            child: const Text('1st Button'),
+            child: const Text('Call Police'),
           ),
           const SizedBox(height: 30),
           ElevatedButton(
             style: style,
             onPressed: () {},
-            child: const Text('2nd Button'),
+            child: const Text('Text Police'),
           ),
           const SizedBox(height: 30),
           ElevatedButton(
             style: style,
             onPressed: () {},
-            child: const Text('3rd Button'),
+            child: const Text('Alert Emergency Contact'),
           ),
           const SizedBox(height: 30),
           ElevatedButton(
             style: style,
             onPressed: () {},
-            child: const Text('4th Button'),
+            child: const Text('Record GPS and Camera'),
           ),
         ],
       ),
