@@ -33,13 +33,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  int _multiplyer = 0;
 
+  int counter = 0;
+  // ignore: unused_element
   void _incrementCounter() {
     setState(() {
-      _counter++;
-      _multiplyer = _counter * 14;
+      counter++;
     });
   }
 
@@ -52,14 +51,17 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _sendSMS() async {
+    _incrementCounter();
     await _requestPermission();
     var smsStatus = await Permission.sms.status;
     if (smsStatus.isGranted) {
       try {
         await UssdPhoneCallSms().textMultiSMS(
-          recipientsList: ['+1234567890'], // Replace with actual phone number(s)
-          smsBody: 'Hello, this is a test message!',
+          recipientsList: ['+18312339795'], // Replace with actual phone number(s)
+          smsBody: 'Dumbass UI/UX mofo. This message was sent $counter times',
         );
+        //ignore: avoid_print
+        print('Successful');
       } catch (e) {
         // Handle any errors here
         // ignore: avoid_print
@@ -89,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
           const SizedBox(height: 30),
           ElevatedButton(
             style: style,
-            onPressed: () {},
+            onPressed: _sendSMS,
             child: const Text('----------'),
           ),
           const SizedBox(height: 30),
