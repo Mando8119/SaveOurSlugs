@@ -41,7 +41,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  @override
   Widget build(BuildContext context) {
 
     return Scaffold(
@@ -50,7 +49,6 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: Container(
         height: 67,
         width: 300,
-        color: const Color.fromARGB(8, 3, 77, 237),
         margin: const EdgeInsets.all(10),
         child: ElevatedButton(
           onPressed: () {},
@@ -60,7 +58,6 @@ class _MyHomePageState extends State<MyHomePage> {
         )
       )
     );
-      
   }
 
       
