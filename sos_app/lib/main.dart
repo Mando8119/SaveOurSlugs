@@ -41,6 +41,20 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  // Function to send SMS
+  void _sendSMS() async {
+    try {
+      await UssdPhoneCallSms().textMultiSMS(
+        recipientsList: ['+7606429239'], // Replace with actual phone number
+        smsBody: 'Hello, this is a test message!',
+      );
+    } catch (e) {
+      // Handle any errors here
+      // ignore: avoid_print
+      print('Error sending SMS: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -53,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
         alignment: Alignment.topCenter,
         margin: const EdgeInsets.all(10),
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: _sendSMS,
           child: const Center(
             child: Text("Push Button For Sex!!\nHot singles in your area!"),
      )
