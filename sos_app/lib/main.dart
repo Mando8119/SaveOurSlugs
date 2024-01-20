@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ussd_phone_call_sms/ussd_phone_call_sms.dart';
+import 'package:permission_handler/permission_handler.dart';
+
 
 
 void main() {
@@ -41,22 +43,69 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  Widget build(BuildContext context) {
+  // Function to send SMS
+  Future<void> _requestPermission() async {
+  var status = await Permission.sms.status;
+    if (!status.isGranted) {
+      await Permission.sms.request();
+    }
+  }
 
-    return Scaffold(
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniStartFloat,
-      floatingActionButton: Container(
-        height: 67,
-        width: 300,
-        margin: const EdgeInsets.all(10),
-        child: ElevatedButton(
-          onPressed: () {},
-          child: const Center(
-            child: Text("Push Button For Sex!!\nHot singles in your area!"),
-     )
-        )
-      )
+  void _sendSMS() async {
+    await _requestPermission();
+    var smsStatus = await Permission.sms.status;
+    if (smsStatus.isGranted) {
+      try {
+        await UssdPhoneCallSms().textMultiSMS(
+          recipientsList: ['+1234567890'], // Replace with actual phone number(s)
+          smsBody: 'Hello, this is a test message!',
+        );
+      } catch (e) {
+        // Handle any errors here
+        // ignore: avoid_print
+        print('Error sending SMS: $e');
+      }
+    } else {
+      // Handle the case when permission is denied
+      // ignore: avoid_print
+      print('SMS permission denied');
+    }
+  }
+
+    @override
+  Widget build(BuildContext context) {
+    final ButtonStyle style =
+        ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
+
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ElevatedButton(
+            style: style,
+            onPressed: () {},
+            child: const Text('1st Button'),
+          ),
+          const SizedBox(height: 30),
+          ElevatedButton(
+            style: style,
+            onPressed: () {},
+            child: const Text('2nd Button'),
+          ),
+          const SizedBox(height: 30),
+          ElevatedButton(
+            style: style,
+            onPressed: () {},
+            child: const Text('3rd Button'),
+          ),
+          const SizedBox(height: 30),
+          ElevatedButton(
+            style: style,
+            onPressed: () {},
+            child: const Text('4th Button'),
+          ),
+        ],
+      ),
     );
   }
 
