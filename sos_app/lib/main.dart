@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ussd_phone_call_sms/ussd_phone_call_sms.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'dart:async';
+import 'dart:io';
 import 'package:flutter_background_video_recorder/flutter_bvr.dart';
 import 'package:flutter_background_video_recorder/flutter_bvr_channel.dart';
 import 'package:flutter_background_video_recorder/flutter_bvr_platform_interface.dart';
@@ -108,7 +110,7 @@ void _sendSMS() async {
   }
 }
 
-    @override
+  @override
   Widget build(BuildContext context) {
     final ButtonStyle style =
         ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 45));
@@ -155,16 +157,61 @@ class UserInformation extends StatelessWidget {
   final String title;
   @override
   Widget build(BuildContext context) {
+    final ButtonStyle style =
+        ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 45));
+
+    return Center(
+      child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            TextButton(
+              onPressed: () {Navigator.pop(context);},
+              child: const Text('Go Back'),
+            ),
+            const SizedBox(height: 30),
+            ElevatedButton(
+              style: style,
+              onPressed: () 
+              {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const UserInformation1(title: 'UserInformation1');
+                }));
+              }, 
+              child: const Text('---3-----'),)
+          ]
+        )
+    );
+    
+  }
+}
+class UserInformation1 extends StatelessWidget {  
+  const UserInformation1({Key? key, required this.title}) : super(key: key);
+  final String title;
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
       ),
       body: Center(
-        child: TextButton(
-          onPressed: () {Navigator.pop(context);},
-          child: const Text('Go Back'),
-        ),
-      ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            TextButton(
+              onPressed: () {},
+              child: const Text('Please enter your full name: '),
+            ),
+            const SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: () {String? user_name = stdin.readLineSync();},
+              child: const Text('Go Back'),
+            ),
+          
+    
+            
+          ]
+        )
+      )
     );
   }
 }
