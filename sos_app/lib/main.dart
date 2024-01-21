@@ -70,11 +70,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 @override
-  /*void initState() {
+  void initState() {
     super.initState();
     getInitialRecordingStatus();
     listenRecordingState();
-  }*/
+  }
 
   @override
   void dispose() {
@@ -220,65 +220,101 @@ void _sendSMS() async {
 }
 
   @override
-  Widget build(BuildContext context) {
-    final ButtonStyle style =
-        ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 45));
-
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
         children: <Widget>[
-          ElevatedButton(
-            style: style,
+          // Background image
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/SOS.png', // Replace with your image asset path
+              fit: BoxFit.cover,
+            ),
+          ),
+
+          // Positioned ElevatedButtons with specific sizes
+          _buildPositionedButton(
+            left: 145,
+            top: 80,
+            width: 140,  // Set the width
+            height: 150,  // Set the height
             onPressed: _call,
-            child: const Text('Call'),
+            text: 'Call',
           ),
-          const SizedBox(height: 30),
-          ElevatedButton(
-            style: style,
+          _buildPositionedButton(
+            left: 145,
+            top: 260,
+            width: 140,  // Set the width
+            height: 150,  // Set the height
             onPressed: _sendSMS,
-            child: const Text('Send SMS'),
+            text: 'Send SMS',
           ),
-          const SizedBox(height: 30),
-      
-          const SizedBox(height: 30),
-          ElevatedButton(
-            style: style,
+          _buildPositionedButton(
+            left: 145,
+            top: 630,
+            width: 140,  // Set the width
+            height: 150,  // Set the height
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return const UserInformation(title: 'UserInformation');
+                return const UserInformation(title: 'UserInformation');
               }));
             },
-            child: const Text('User Information'),
+            text: 'User Information',
           ),
-          const SizedBox(height: 30),
-          ElevatedButton(
-            style: style,
-            onPressed: () 
-              {
+          _buildPositionedButton(
+            left: 145,
+            top: 450,
+            width: 140,  // Set the width
+            height: 150,  // Set the height
+            onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return const EmergencyContact(title: 'EmergencyContact');
+                return const EmergencyContact(title: 'EmergencyContact');
               }));
             },
-            child: const Text('Set Emergency Contact'),
-          ),
-          const SizedBox(height: 30),
-          ElevatedButton(
-            style: style,
-            onPressed: sendingmail,
-            child: const Text('Send E-Mail'),
-          ),
-          const SizedBox(height: 30),
-          ElevatedButton(
-            style: style,
-            onPressed: _requestAllPermissions,
-            child: const Text('Permissions'),
+            text: 'Set Emergency Contact',
           ),
         ],
       ),
     );
-  }   
+  }
+
+  Widget _buildPositionedButton({
+    required double left,
+    required double top,
+    required double width,
+    required double height,
+    required VoidCallback onPressed,
+    required String text,
+  }) {
+    return Positioned(
+      left: left,
+      top: top,
+      child: Container(
+        width: width,
+        height: height,
+        child: ElevatedButton(
+          onPressed: onPressed,
+          child: Text(text),
+          style: ElevatedButton.styleFrom(
+            primary: Colors.blue, // Temporary color for visibility
+          ),
+        ),
+      ),
+    );
+  }
 }
+
+Widget _buildInvisibleButton(BuildContext context, {required VoidCallback onPressed, required double width, required double height}) {
+  return GestureDetector(
+    onTap: onPressed,
+    child: Container(
+      width: width,
+      height: height,
+      color: Colors.transparent, // Invisible hit area
+    ),
+  );
+}
+   
 
 // PERSONAL INFO 1
 // PERSONAL INFO 1
