@@ -10,6 +10,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter_background_video_recorder/flutter_bvr.dart';
 import 'package:mailer/mailer.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 
 
 void main() {
@@ -128,9 +129,17 @@ class _MyHomePageState extends State<MyHomePage> {
     if (_isRecording) {
       String filePath = await _flutterBackgroundVideoRecorderPlugin.stopVideoRecording() ?? "None";
       debugPrint(filePath);
+
+    // Save the recorded file to the gallery
+    try {
+      bool success = (await GallerySaver.saveVideo(filePath)) ?? false;
+      print("Video saved to gallery: $success");
+    } catch (e) {
+      // ignore: avoid_print
+      print('Error sending video: $e');
     }
   }
-
+} 
 Future<void> _requestAllPermissions() async {
     Map<Permission, PermissionStatus> statuses = await [
       Permission.sms,
