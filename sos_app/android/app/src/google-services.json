@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "63861827634",
+    "project_id": "googe-signin-a8029",
+    "storage_bucket": "googe-signin-a8029.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:63861827634:android:c1892270937e9b184a342b",
+        "android_client_info": {
+          "package_name": "com.example.sos_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "63861827634-1aj9i851bljkc66l3vqn35nge9q8976h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2n5q89sKbCtAtXSDoEHB1p20h-BF7bE8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "63861827634-1aj9i851bljkc66l3vqn35nge9q8976h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

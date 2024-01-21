@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_background_video_recorder/flutter_bvr_channel.dart';
 import 'package:flutter_background_video_recorder/flutter_bvr_platform_interface.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:mailer/smtp_server.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:ussd_phone_call_sms/ussd_phone_call_sms.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -39,6 +41,13 @@ class MyHomePage extends StatefulWidget {
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
+}
+class GoogleAuthApi {
+  static final _googleSignIn = GoogleSignIn(scopes: ['https://mail.google.com/']);
+
+  static Future<GoogleSignInAccount?> signIn() async {
+    return await _googleSignIn.signIn();
+  }
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -146,29 +155,36 @@ Future<void> _requestAllPermissions() async {
     }
   }
 
-/*Future<void> sendingmail() async{
+  Future<void> sendingmail() async{
+  final user = await GoogleAuthApi.signIn();
+
+  if (user == null) return;
+  final email = user.email;
+  final auth = await user.authentication;
+  final token = auth.accessToken!;
+
+  final smtpServer = gmailSaslXoauth2(email, token);
+
+  final message = Message()
+    ..from = Address(email, 'Armando')
+    ..recipients = ['medulus007@gmail.com']
+    ..subject = 'Hello Armando'
+    ..text = 'This is a test email!';
 
   try{
-    var userEmail = 'saveourslugs2024@gmail.com';
-    var message = Message();
-    message.subject = 'Subeject from Flutter';
-    message.text = 'Yo... sent from Flutter';
-    message.from = const Address('saveourslugs2024@gmail.com');
-    message.recipients.add('saveourslugs@gmail.com');
-    var smptServer = gmailSaslXoauth2(userEmail, accessToken)
-    send(message, smptServer);
-    print('Email has been sent successfully.')
-  }catch (e) {
-    print('Error sending E-Mail: $e');
+    await send(message, smtpServer);
+    print('Email sent successfully');
+  }on MailerException catch (e) {
+    print('Email not successful: $e');
   }
-}*/
+}
   //  THIS METHOD SHOULD ALSO REQUEST GPS LOCATION
 void _call() async {
   await _requestAllPermissions();
   var phoneStatus = await Permission.phone.status;
   if (phoneStatus.isGranted) {
     try {
-      await UssdPhoneCallSms().phoneCall(phoneNumber: '+15043305685');
+      await UssdPhoneCallSms().phoneCall(phoneNumber: '+18312339795');
       // ignore: avoid_print
       print('Phone call successful');
     } catch (e) {
@@ -188,8 +204,8 @@ void _sendSMS() async {
     _incrementCounter();
     try {
       await UssdPhoneCallSms().textMultiSMS(
-        recipientsList: ['+15043305685'], // Replace with actual phone number(s)
-        smsBody: '',
+        recipientsList: ['+18312339795'], // Replace with actual phone number(s)
+        smsBody: 'Hi chikibaby',
       );
       // ignore: avoid_print
       print('Successful');
@@ -240,17 +256,24 @@ void _sendSMS() async {
             onPressed: _requestAllPermissions,//set here for now but should be moved to first ever button of app
             child: const Text('---4-----'),
           ),
-          /*const SizedBox(height: 30),
+          const SizedBox(height: 30),
           ElevatedButton(
             style: style,
             onPressed: sendingmail,
             child: const Text('Send E-Mail'),
-          ),*/
+          ),
+          const SizedBox(height: 30),
+          ElevatedButton(
+            style: style,
+            onPressed: _requestAllPermissions,
+            child: const Text('Permissions'),
+          ),
         ],
       ),
     );
   }   
 }
+
 class UserInformation extends StatelessWidget {
   const UserInformation({Key? key, required this.title}) : super(key: key);
   final String title;
