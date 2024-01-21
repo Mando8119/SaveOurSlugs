@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_background_video_recorder/flutter_bvr_channel.dart';
+import 'package:flutter_background_video_recorder/flutter_bvr_platform_interface.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:ussd_phone_call_sms/ussd_phone_call_sms.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter_background_video_recorder/flutter_bvr.dart';
-import 'package:flutter_background_video_recorder/flutter_bvr_channel.dart';
-import 'package:flutter_background_video_recorder/flutter_bvr_platform_interface.dart';
 import 'package:mailer/mailer.dart';
 
 
@@ -45,6 +45,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   int counter = 0;
   String place = 'even';
+
+  bool _isRecording = false;
+  bool _recorderBusy = false;
+  StreamSubscription<int?>? _streamSubscription;
+  final _flutterBackgroundVideoRecorderPlugin = FlutterBackgroundVideoRecorder();
   // ignore: unused_element
   void _incrementCounter() {
     setState(() {
@@ -55,6 +60,68 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+@override
+  void initState() {
+    super.initState();
+    getInitialRecordingStatus();
+    listenRecordingState();
+  }
+
+  @override
+  void dispose() {
+    _streamSubscription?.cancel();
+    super.dispose();
+  }
+
+  Future<void> getInitialRecordingStatus() async {
+    _isRecording = await _flutterBackgroundVideoRecorderPlugin.getVideoRecordingStatus() == 1;
+  }
+
+  void listenRecordingState() {
+    _streamSubscription = _flutterBackgroundVideoRecorderPlugin.recorderState.listen((event) {
+      setState(() {
+        switch (event) {
+          case 1:
+            _isRecording = true;
+            _recorderBusy = true;
+            break;
+          case 2:
+            _isRecording = false;
+            _recorderBusy = false;
+            break;
+          case 3:
+            _recorderBusy = true;
+            break;
+          case -1:
+            _isRecording = false;
+            _recorderBusy = false;
+            break;
+          default:
+            break;
+        }
+      });
+    });
+  }
+
+  Future<void> startRecording() async {
+    if (!_isRecording && !_recorderBusy) {
+      await _flutterBackgroundVideoRecorderPlugin.startVideoRecording(
+        folderName: "Example Recorder",
+        cameraFacing: CameraFacing.frontCamera,
+        notificationTitle: "Example Notification Title",
+        notificationText: "Example Notification Text",
+        showToast: false
+      );
+    }
+  }
+
+  Future<void> stopRecording() async {
+    if (_isRecording) {
+      String filePath = await _flutterBackgroundVideoRecorderPlugin.stopVideoRecording() ?? "None";
+      debugPrint(filePath);
+    }
+  }
+
 Future<void> _requestAllPermissions() async {
     Map<Permission, PermissionStatus> statuses = await [
       Permission.sms,
@@ -63,6 +130,7 @@ Future<void> _requestAllPermissions() async {
       Permission.videos,
       Permission.microphone,
       Permission.camera,
+      Permission.storage,
       // Add other permissions you need here
     ].request();
 
