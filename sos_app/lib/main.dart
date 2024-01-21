@@ -273,6 +273,14 @@ Widget build(BuildContext context) {
             },
             text: 'Set Emergency Contact',
           ),
+          _buildPositionedButton(
+            left: 145,
+            top: 630,
+            width: 140,  // Set the width
+            height: 150,  // Set the height
+            onPressed: (){},
+            text: 'Record Video',
+          )
         ],
       ),
     );
