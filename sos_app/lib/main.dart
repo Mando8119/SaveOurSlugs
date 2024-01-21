@@ -250,10 +250,10 @@ Widget build(BuildContext context) {
             text: 'Send SMS',
           ),
           _buildPositionedButton(
-            left: 145,
-            top: 630,
-            width: 140,  // Set the width
-            height: 150,  // Set the height
+            left: 7,
+            top: 50,
+            width: 55,  // Set the width
+            height: 55,  // Set the height
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return const UserInformation(title: 'UserInformation');
