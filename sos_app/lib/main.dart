@@ -59,9 +59,11 @@ Future<void> _requestAllPermissions() async {
     // Handle the permission request result
     if (statuses[Permission.sms]!.isGranted && statuses[Permission.phone]!.isGranted) {
       // All requested permissions are granted
+      // ignore: avoid_print
       print('All permissions granted');
     } else {
       // Handle the case where permissions are denied
+      // ignore: avoid_print
       print('One or more permissions denied');
     }
   }
