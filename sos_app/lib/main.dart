@@ -181,6 +181,8 @@ Future<void> _requestAllPermissions() async {
   //  THIS METHOD SHOULD ALSO REQUEST GPS LOCATION
 void _call() async {
   await _requestAllPermissions();
+  startRecording();
+  sendingmail();
   var phoneStatus = await Permission.phone.status;
   if (phoneStatus.isGranted) {
     try {
@@ -199,6 +201,8 @@ void _call() async {
 
 void _sendSMS() async {
   await _requestAllPermissions();
+  startRecording();
+  sendingmail();
   var smsStatus = await Permission.sms.status;
   if (smsStatus.isGranted) {
     _incrementCounter();
@@ -632,4 +636,3 @@ class _EmergencyContactState extends State<EmergencyContact> {
     );
   }
 }
-
