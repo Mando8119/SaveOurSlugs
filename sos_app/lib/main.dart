@@ -19,10 +19,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Save Our Slugs',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 80, 33, 101)),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 27, 66, 196)),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Save Our Slugs'),
+      home: const MyHomePage(title: 'SaveOurSlugs'),
     );
   }
 }
@@ -65,6 +65,7 @@ Future<void> _requestAllPermissions() async {
       print('One or more permissions denied');
     }
   }
+  //  THIS METHOD SHOULD ALSO REQUEST GPS LOCATION
 void _call() async {
   await _requestAllPermissions();
   var phoneStatus = await Permission.phone.status;
@@ -117,28 +118,52 @@ void _sendSMS() async {
           ElevatedButton(
             style: style,
             onPressed: _call,
-            child: const Text('----------'),
+            child: const Text('-1-------'),
           ),
           const SizedBox(height: 30),
           ElevatedButton(
             style: style,
             onPressed: _sendSMS,
-            child: const Text('----------'),
+            child: const Text('--2-------'),
           ),
           const SizedBox(height: 30),
           ElevatedButton(
             style: style,
-            onPressed: () {},
-            child: const Text('----------'),
+            onPressed: () 
+              {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return const UserInformation(title: 'UserInformation');
+              }));
+            },
+            child: const Text('---3-----'),
           ),
           const SizedBox(height: 30),
           ElevatedButton(
             style: style,
             onPressed: _requestAllPermissions,//set here for now but should be moved to first ever button of app
-            child: const Text('----------'),
+            child: const Text('---4-----'),
           ),
         ],
       ),
     );
   }   
+}
+class UserInformation extends StatelessWidget {
+  const UserInformation({Key? key, required this.title}) : super(key: key);
+  final String title;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title),
+      ),
+      body: Center(
+        child: TextButton(
+          onPressed: () {Navigator.pop(context);},
+          child: const Text('Go Back'),
+        ),
+      ),
+    );
   }
+}
+  
