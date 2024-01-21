@@ -200,15 +200,23 @@ class UserInformation1 extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            TextButton(
-              onPressed: () {},
-              child: const Text('Please enter your full name: '),
+            TextFormField(
+            decoration: const InputDecoration(
+              hintText: 'Please enter your full name:',
+            )
+            ),
+            TextFormField(
+              decoration: const InputDecoration(
+                hintText: 'Please enter your email:',
+              )
             ),
             const SizedBox(height: 30),
             ElevatedButton(
-              onPressed: () {String? user_name = stdin.readLineSync();},
-              child: const Text('Go Back'),
-            ),
+              onPressed: () {}, 
+              child: const Text("Submit")
+            )
+            
+    
           
     
             
