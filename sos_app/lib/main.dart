@@ -70,11 +70,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 @override
-  void initState() {
+  /*void initState() {
     super.initState();
     getInitialRecordingStatus();
     listenRecordingState();
-  }
+  }*/
 
   @override
   void dispose() {
@@ -82,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
-  Future<void> getInitialRecordingStatus() async {
+  /*Future<void> getInitialRecordingStatus() async {
     _isRecording = await _flutterBackgroundVideoRecorderPlugin.getVideoRecordingStatus() == 1;
   }
 
@@ -130,6 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
       debugPrint(filePath);
     }
   }
+  */
 
 Future<void> _requestAllPermissions() async {
     Map<Permission, PermissionStatus> statuses = await [
@@ -231,13 +232,30 @@ void _sendSMS() async {
           ElevatedButton(
             style: style,
             onPressed: _call,
-            child: const Text('-1-------'),
+            child: const Text('Call'),
           ),
           const SizedBox(height: 30),
           ElevatedButton(
             style: style,
             onPressed: _sendSMS,
-            child: const Text('--2-------'),
+            child: const Text('Send SMS'),
+          ),
+          const SizedBox(height: 30),
+      
+          ElevatedButton(
+            style: style,
+            onPressed: _requestAllPermissions,//set here for now but should be moved to first ever button of app
+            child: const Text('Request Permissions'),
+          ),
+          const SizedBox(height: 30),
+          ElevatedButton(
+            style: style,
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return const UserInformation(title: 'UserInformation');
+              }));
+            },
+            child: const Text('User Information'),
           ),
           const SizedBox(height: 30),
           ElevatedButton(
@@ -245,18 +263,13 @@ void _sendSMS() async {
             onPressed: () 
               {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return const UserInformation(title: 'UserInformation');
+              return const EmergencyContact(title: 'EmergencyContact');
               }));
             },
-            child: const Text('---3-----'),
+            child: const Text('Set Emergency Contact'),
           ),
           const SizedBox(height: 30),
-          ElevatedButton(
-            style: style,
-            onPressed: _requestAllPermissions,//set here for now but should be moved to first ever button of app
-            child: const Text('---4-----'),
-          ),
-          const SizedBox(height: 30),
+          /*const SizedBox(height: 30),
           ElevatedButton(
             style: style,
             onPressed: sendingmail,
@@ -274,47 +287,20 @@ void _sendSMS() async {
   }   
 }
 
-class UserInformation extends StatelessWidget {
+// PERSONAL INFO 1
+// PERSONAL INFO 1
+// PERSONAL INFO 1
+// PERSONAL INFO 1
+// PERSONAL INFO 1
+class UserInformation extends StatefulWidget {
   const UserInformation({Key? key, required this.title}) : super(key: key);
   final String title;
-  @override
-  Widget build(BuildContext context) {
-    final ButtonStyle style =
-        ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 45));
-
-    return Center(
-      child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            TextButton(
-              onPressed: () {Navigator.pop(context);},
-              child: const Text('Go Back'),
-            ),
-            const SizedBox(height: 30),
-            ElevatedButton(
-              style: style,
-              onPressed: () 
-              {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const UserInformation1(title: 'UserInformation1');
-                }));
-              }, 
-              child: const Text('---3-----'),)
-          ]
-        )
-    );
-    
-  }
-}
-class UserInformation1 extends StatefulWidget {
-  const UserInformation1({Key? key, required this.title}) : super(key: key);
-  final String title;
 
   @override
-  _UserInformation1State createState() => _UserInformation1State();
+  _UserInformationState createState() => _UserInformationState();
 }
 
-class _UserInformation1State extends State<UserInformation1> {
+class _UserInformationState extends State<UserInformation> {
   // TextEditingControllers to retrieve the current value of TextFormFields
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -337,17 +323,6 @@ class _UserInformation1State extends State<UserInformation1> {
 
     // Add your logic to handle the submitted data
   }
-
-  String getName() {
-    String name = _nameController.text;
-    return name;
-  }
-
-  String getEmail(){
-    String email = _emailController.text;
-    return email;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -367,13 +342,17 @@ class _UserInformation1State extends State<UserInformation1> {
             TextFormField(
               controller: _emailController,
               decoration: const InputDecoration(
-                hintText: 'Please enter your email:',
+                hintText: 'Please enter your date of birth:',
               ),
             ),
             const SizedBox(height: 30),
             ElevatedButton(
-              onPressed: _handleSubmit,
-              child: const Text("Submit"),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return const UserInformation1(title: 'UserInformation1');
+              }));
+              },
+              child: const Text("Continue"),
             ),
           ],
         ),
@@ -381,4 +360,239 @@ class _UserInformation1State extends State<UserInformation1> {
     );
   }
 }
-  
+
+
+//PERSONAL INFO 2
+//PERSONAL INFO 2
+//PERSONAL INFO 2
+//PERSONAL INFO 2
+
+class UserInformation1 extends StatefulWidget {
+  const UserInformation1({Key? key, required this.title}) : super(key: key);
+  final String title;
+
+  @override
+  _UserInformation1State createState() => _UserInformation1State();
+}
+
+class _UserInformation1State extends State<UserInformation1> {
+  // TextEditingControllers to retrieve the current value of TextFormFields
+  final TextEditingController _sexController = TextEditingController();
+  final TextEditingController _raceController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Dispose the controllers when the widget is disposed
+    _sexController.dispose();
+    _raceController.dispose();
+    super.dispose();
+  }
+
+  void _handleSubmit() {
+    // Retrieve the values from the controllers
+    String sex = _sexController.text;
+    String race = _raceController.text;
+
+    // Use the values as needed
+    print('Name: $sex, Email: $race');
+
+    // Add your logic to handle the submitted data
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            TextFormField(
+              controller: _sexController,
+              decoration: const InputDecoration(
+                hintText: 'Please enter your Sex:',
+              ),
+            ),
+            TextFormField(
+              controller: _raceController,
+              decoration: const InputDecoration(
+                hintText: 'Please enter your Race:',
+              ),
+            ),
+            const SizedBox(height: 30),
+            
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return const UserInformation2(title: 'UserInformation2');
+              }));
+              },
+              child: const Text("Continue"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+//PERSONAL INFO 3
+//PERSONAL INFO 3
+//PERSONAL INFO 3
+//PERSONAL INFO 3
+
+class UserInformation2 extends StatefulWidget {
+  const UserInformation2({Key? key, required this.title}) : super(key: key);
+  final String title;
+
+  @override
+  _UserInformation2State createState() => _UserInformation2State();
+}
+
+class _UserInformation2State extends State<UserInformation2> {
+  // TextEditingControllers to retrieve the current value of TextFormFields
+  final TextEditingController _heightController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _weightController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Dispose the controllers when the widget is disposed
+    _heightController.dispose();
+    _emailController.dispose();
+    _weightController.dispose();
+    super.dispose();
+  }
+
+  void _handleSubmit() {
+    // Retrieve the values from the controllers
+    String height= _heightController.text;
+    String email = _emailController.text;
+    String weight = _weightController.text;
+
+    // Use the values as needed
+    print('Name: $height, Email: $email, Weight: $weight');
+    // Add your logic to handle the submitted data
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            TextFormField(
+              controller: _heightController,
+              decoration: const InputDecoration(
+                hintText: 'Please enter your email:',
+              ),
+            ),
+            TextFormField(
+              controller: _emailController,
+              decoration: const InputDecoration(
+                hintText: 'Please enter your height:',
+              ),
+            ),
+            TextFormField(
+              controller: _emailController,
+              decoration: const InputDecoration(
+                hintText: 'Please enter your weight:',
+              ),
+            ),
+            const SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return const MyHomePage(title: 'MyHomePage');
+              }));
+              },
+              child: const Text("Continue"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+class EmergencyContact extends StatefulWidget {
+  const EmergencyContact({Key? key, required this.title}) : super(key: key);
+  final String title;
+
+  @override
+  _EmergencyContactState createState() => _EmergencyContactState();
+}
+
+class _EmergencyContactState extends State<EmergencyContact> {
+  // TextEditingControllers to retrieve the current value of TextFormFields
+  final TextEditingController _ecNameController = TextEditingController();
+  final TextEditingController _ecEmailController = TextEditingController();
+  final TextEditingController _ecPhoneController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Dispose the controllers when the widget is disposed
+    _ecNameController.dispose();
+    _ecEmailController.dispose();
+    _ecPhoneController.dispose();
+    super.dispose();
+  }
+
+  void _handleSubmit() {
+    // Retrieve the values from the controllers
+    String ecName= _ecNameController.text;
+    String ecEmail = _ecEmailController.text;
+    String ecPhone = _ecPhoneController.text;
+
+    // Use the values as needed
+    print('Name: $ecName, Email: $ecEmail, Weight: $ecPhone');
+    // Add your logic to handle the submitted data
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            TextFormField(
+              controller: _ecNameController,
+              decoration: const InputDecoration(
+                hintText: "Please enter your emergency contact's full name:",
+              ),
+            ),
+            TextFormField(
+              controller: _ecEmailController,
+              decoration: const InputDecoration(
+                hintText: "Please enter your emergency contact's email:",
+              ),
+            ),
+            TextFormField(
+              controller: _ecPhoneController,
+              decoration: const InputDecoration(
+                hintText: "Please enter your emergency contact's phone number:",
+              ),
+            ),
+            const SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return const MyHomePage(title: 'MyHomePage');
+              }));
+              },
+              child: const Text("Continue"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
