@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 import 'package:ussd_phone_call_sms/ussd_phone_call_sms.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:async';
@@ -6,6 +7,7 @@ import 'dart:io';
 import 'package:flutter_background_video_recorder/flutter_bvr.dart';
 import 'package:flutter_background_video_recorder/flutter_bvr_channel.dart';
 import 'package:flutter_background_video_recorder/flutter_bvr_platform_interface.dart';
+import 'package:mailer/mailer.dart';
 
 
 void main() {
@@ -72,6 +74,23 @@ Future<void> _requestAllPermissions() async {
       print('One or more permissions denied');
     }
   }
+
+/*Future<void> sendingmail() async{
+
+  try{
+    var userEmail = 'saveourslugs2024@gmail.com';
+    var message = Message();
+    message.subject = 'Subeject from Flutter';
+    message.text = 'Yo... sent from Flutter';
+    message.from = const Address('saveourslugs2024@gmail.com');
+    message.recipients.add('saveourslugs@gmail.com');
+    var smptServer = gmailSaslXoauth2(userEmail, accessToken)
+    send(message, smptServer);
+    print('Email has been sent successfully.')
+  }catch (e) {
+    print('Error sending E-Mail: $e');
+  }
+}*/
   //  THIS METHOD SHOULD ALSO REQUEST GPS LOCATION
 void _call() async {
   await _requestAllPermissions();
@@ -150,6 +169,12 @@ void _sendSMS() async {
             onPressed: _requestAllPermissions,//set here for now but should be moved to first ever button of app
             child: const Text('---4-----'),
           ),
+          /*const SizedBox(height: 30),
+          ElevatedButton(
+            style: style,
+            onPressed: sendingmail,
+            child: const Text('Send E-Mail'),
+          ),*/
         ],
       ),
     );
