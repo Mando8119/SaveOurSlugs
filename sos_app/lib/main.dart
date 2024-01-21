@@ -6,7 +6,6 @@ import 'package:flutter_background_video_recorder/flutter_bvr_channel.dart';
 import 'package:flutter_background_video_recorder/flutter_bvr_platform_interface.dart';
 
 
-
 void main() {
   runApp(const MyApp());
 }
@@ -53,6 +52,10 @@ Future<void> _requestAllPermissions() async {
     Map<Permission, PermissionStatus> statuses = await [
       Permission.sms,
       Permission.phone,
+      Permission.location,
+      Permission.videos,
+      Permission.microphone,
+      Permission.camera,
       // Add other permissions you need here
     ].request();
 
