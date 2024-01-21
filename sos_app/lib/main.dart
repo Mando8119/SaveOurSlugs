@@ -12,7 +12,10 @@ import 'package:mailer/mailer.dart';
 
 void main() {
   runApp(const MyApp());
-}
+
+  }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -118,7 +121,7 @@ void _sendSMS() async {
     try {
       await UssdPhoneCallSms().textMultiSMS(
         recipientsList: ['+15043305685'], // Replace with actual phone number(s)
-        smsBody: 'This message was sent $counter times, that is an $place',
+        smsBody: '',
       );
       // ignore: avoid_print
       print('Successful');
@@ -242,6 +245,16 @@ class _UserInformation1State extends State<UserInformation1> {
     print('Name: $name, Email: $email');
 
     // Add your logic to handle the submitted data
+  }
+
+  String getName() {
+    String name = _nameController.text;
+    return name;
+  }
+
+  String getEmail(){
+    String email = _emailController.text;
+    return email;
   }
 
   @override
