@@ -82,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
-  /*Future<void> getInitialRecordingStatus() async {
+  Future<void> getInitialRecordingStatus() async {
     _isRecording = await _flutterBackgroundVideoRecorderPlugin.getVideoRecordingStatus() == 1;
   }
 
@@ -130,7 +130,6 @@ class _MyHomePageState extends State<MyHomePage> {
       debugPrint(filePath);
     }
   }
-  */
 
 Future<void> _requestAllPermissions() async {
     Map<Permission, PermissionStatus> statuses = await [
@@ -242,11 +241,6 @@ void _sendSMS() async {
           ),
           const SizedBox(height: 30),
       
-          ElevatedButton(
-            style: style,
-            onPressed: _requestAllPermissions,//set here for now but should be moved to first ever button of app
-            child: const Text('Request Permissions'),
-          ),
           const SizedBox(height: 30),
           ElevatedButton(
             style: style,
@@ -269,7 +263,6 @@ void _sendSMS() async {
             child: const Text('Set Emergency Contact'),
           ),
           const SizedBox(height: 30),
-          /*const SizedBox(height: 30),
           ElevatedButton(
             style: style,
             onPressed: sendingmail,
