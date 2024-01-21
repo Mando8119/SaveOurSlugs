@@ -212,42 +212,68 @@ class UserInformation extends StatelessWidget {
     
   }
 }
-class UserInformation1 extends StatelessWidget {  
+class UserInformation1 extends StatefulWidget {
   const UserInformation1({Key? key, required this.title}) : super(key: key);
   final String title;
+
+  @override
+  _UserInformation1State createState() => _UserInformation1State();
+}
+
+class _UserInformation1State extends State<UserInformation1> {
+  // TextEditingControllers to retrieve the current value of TextFormFields
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Dispose the controllers when the widget is disposed
+    _nameController.dispose();
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  void _handleSubmit() {
+    // Retrieve the values from the controllers
+    String name = _nameController.text;
+    String email = _emailController.text;
+
+    // Use the values as needed
+    print('Name: $name, Email: $email');
+
+    // Add your logic to handle the submitted data
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(widget.title),
       ),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             TextFormField(
-            decoration: const InputDecoration(
-              hintText: 'Please enter your full name:',
-            )
+              controller: _nameController,
+              decoration: const InputDecoration(
+                hintText: 'Please enter your full name:',
+              ),
             ),
             TextFormField(
+              controller: _emailController,
               decoration: const InputDecoration(
                 hintText: 'Please enter your email:',
-              )
+              ),
             ),
             const SizedBox(height: 30),
             ElevatedButton(
-              onPressed: () {}, 
-              child: const Text("Submit")
-            )
-            
-    
-          
-    
-            
-          ]
-        )
-      )
+              onPressed: _handleSubmit,
+              child: const Text("Submit"),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
