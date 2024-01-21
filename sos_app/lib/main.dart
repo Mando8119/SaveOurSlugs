@@ -167,8 +167,8 @@ Future<void> _requestAllPermissions() async {
 
   final message = Message()
     ..from = Address(email, 'Armando')
-    ..recipients = ['medulus007@gmail.com']
-    ..subject = 'Hello Armando'
+    ..recipients = [email]
+    ..subject = 'Flutter Email'
     ..text = 'This is a test email!';
 
   try{
@@ -236,28 +236,28 @@ Widget build(BuildContext context) {
             ),
           ),
 
-          // Positioned ElevatedButtons with specific sizes
+          // Positioned invisible ElevatedButtons
           _buildPositionedButton(
             left: 145,
             top: 80,
-            width: 140,  // Set the width
-            height: 150,  // Set the height
+            width: 140,
+            height: 150,
             onPressed: _call,
             text: 'Call',
           ),
           _buildPositionedButton(
             left: 145,
             top: 260,
-            width: 140,  // Set the width
-            height: 150,  // Set the height
+            width: 140,
+            height: 150,
             onPressed: _sendSMS,
             text: 'Send SMS',
           ),
           _buildPositionedButton(
             left: 7,
             top: 50,
-            width: 55,  // Set the width
-            height: 55,  // Set the height
+            width: 55,
+            height: 55,
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return const UserInformation(title: 'UserInformation');
@@ -268,8 +268,8 @@ Widget build(BuildContext context) {
           _buildPositionedButton(
             left: 145,
             top: 450,
-            width: 140,  // Set the width
-            height: 150,  // Set the height
+            width: 140,
+            height: 150,
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return const EmergencyContact(title: 'EmergencyContact');
@@ -277,14 +277,7 @@ Widget build(BuildContext context) {
             },
             text: 'Set Emergency Contact',
           ),
-          _buildPositionedButton(
-            left: 145,
-            top: 630,
-            width: 140,  // Set the width
-            height: 150,  // Set the height
-            onPressed: (){},
-            text: 'Record Video',
-          )
+          // ... Additional buttons as required
         ],
       ),
     );
@@ -308,7 +301,10 @@ Widget build(BuildContext context) {
           onPressed: onPressed,
           child: Text(text),
           style: ElevatedButton.styleFrom(
-            primary: Colors.blue, // Temporary color for visibility
+            primary: Colors.transparent, // Make the button background transparent
+            onPrimary: Colors.transparent, // Make the button text transparent
+            shadowColor: Colors.transparent, // Remove shadow
+            elevation: 0, // Remove elevation
           ),
         ),
       ),
@@ -333,6 +329,7 @@ Widget _buildInvisibleButton(BuildContext context, {required VoidCallback onPres
 // PERSONAL INFO 1
 // PERSONAL INFO 1
 // PERSONAL INFO 1
+
 class UserInformation extends StatefulWidget {
   const UserInformation({Key? key, required this.title}) : super(key: key);
   final String title;
@@ -342,65 +339,86 @@ class UserInformation extends StatefulWidget {
 }
 
 class _UserInformationState extends State<UserInformation> {
-  // TextEditingControllers to retrieve the current value of TextFormFields
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
 
   @override
   void dispose() {
-    // Dispose the controllers when the widget is disposed
     _nameController.dispose();
     _emailController.dispose();
     super.dispose();
   }
 
-  void _handleSubmit() {
-    // Retrieve the values from the controllers
-    String name = _nameController.text;
-    String email = _emailController.text;
-
-    // Use the values as needed
-    print('Name: $name, Email: $email');
-
-    // Add your logic to handle the submitted data
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            TextFormField(
-              controller: _nameController,
-              decoration: const InputDecoration(
-                hintText: 'Please enter your full name:',
+      body: Stack(
+        children: <Widget>[
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/1.png', // Replace with your image asset path
+              fit: BoxFit.cover,
+            ),
+          ),
+          // Move the box up by adjusting the top property of Positioned
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.2, // Adjust the value as needed
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.8,
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.7), // Semi-transparent white background
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    TextFormField(
+                      controller: _nameController,
+                      decoration: const InputDecoration(
+                        hintText: 'Please enter your full name:',
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
+                        hintText: 'Please enter your date of birth:',
+                      ),
+                    ),
+                    SizedBox(height: 30),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) {
+                            return const UserInformation1(title: 'UserInformation1');
+                          }));
+                        },
+                        child: const Text("Continue"),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.transparent, // Make the button background transparent
+                          onPrimary: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-            TextFormField(
-              controller: _emailController,
-              decoration: const InputDecoration(
-                hintText: 'Please enter your date of birth:',
-              ),
-            ),
-            const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return const UserInformation1(title: 'UserInformation1');
-              }));
-              },
-              child: const Text("Continue"),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
+
+
+
+
 
 
 //PERSONAL INFO 2
