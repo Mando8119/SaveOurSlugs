@@ -139,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
       print('Error sending video: $e');
     }
   }
-} 
+}
 Future<void> _requestAllPermissions() async {
     Map<Permission, PermissionStatus> statuses = await [
       Permission.sms,
@@ -175,10 +175,10 @@ Future<void> _requestAllPermissions() async {
   final smtpServer = gmailSaslXoauth2(email, token);
 
   final message = Message()
-    ..from = Address(email, 'Armando')
+    ..from = Address(email, 'User')
     ..recipients = [email]
-    ..subject = 'Flutter Email'
-    ..text = 'This is a test email!';
+    ..subject = 'Incident Report'
+    ..text = 'This report is meant to provide vital information including an attachment of the video feed captured from the incident.';
 
   try{
     await send(message, smtpServer);
@@ -195,7 +195,7 @@ void _call() async {
   var phoneStatus = await Permission.phone.status;
   if (phoneStatus.isGranted) {
     try {
-      await UssdPhoneCallSms().phoneCall(phoneNumber: '+18312339795');
+      await UssdPhoneCallSms().phoneCall(phoneNumber: '+18312339795'); //would be 911, however we don't want cops showing up for demonstration
       // ignore: avoid_print
       print('Phone call successful');
     } catch (e) {
@@ -217,8 +217,8 @@ void _sendSMS() async {
     _incrementCounter();
     try {
       await UssdPhoneCallSms().textMultiSMS(
-        recipientsList: ['+18312339795'], // Replace with actual phone number(s)
-        smsBody: 'Hi chikibaby',
+        recipientsList: ['+18312339795'], // Replace with actual emergency contact
+        smsBody: 'This message would contain vital information to your emergency contact of the incident.',
       );
       // ignore: avoid_print
       print('Successful');
@@ -279,14 +279,25 @@ Widget build(BuildContext context) {
             top: 450,
             width: 140,
             height: 150,
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return const EmergencyContact(title: 'EmergencyContact');
-              }));
-            },
+            onPressed: _sendSMS,
             text: 'Set Emergency Contact',
           ),
-          // ... Additional buttons as required
+          _buildPositionedButton(
+            left: 145,
+            top: 630,
+            width: 140,  // Set the width
+            height: 150,  // Set the height
+            onPressed: (){
+              // Toggle between starting and stopping recording
+              if (_isRecording) {
+                stopRecording();
+                } else {
+                  startRecording();
+                }
+                  // Update recording state 
+              },
+              text: _isRecording ? 'Stop Recording' : 'Record Video',  // Change button text based on recording state
+              ),
         ],
       ),
     );
@@ -339,6 +350,7 @@ Widget _buildInvisibleButton(BuildContext context, {required VoidCallback onPres
 // PERSONAL INFO 1
 // PERSONAL INFO 1
 
+
 class UserInformation extends StatefulWidget {
   const UserInformation({Key? key, required this.title}) : super(key: key);
   final String title;
@@ -369,9 +381,8 @@ class _UserInformationState extends State<UserInformation> {
               fit: BoxFit.cover,
             ),
           ),
-          // Move the box up by adjusting the top property of Positioned
           Positioned(
-            top: MediaQuery.of(context).size.height * 0.2, // Adjust the value as needed
+            top: MediaQuery.of(context).size.height * 0.2,
             left: 0,
             right: 0,
             child: Center(
@@ -379,7 +390,7 @@ class _UserInformationState extends State<UserInformation> {
                 width: MediaQuery.of(context).size.width * 0.8,
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.7), // Semi-transparent white background
+                  color: Colors.white.withOpacity(0.7),
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Column(
@@ -409,7 +420,7 @@ class _UserInformationState extends State<UserInformation> {
                         },
                         child: const Text("Continue"),
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.transparent, // Make the button background transparent
+                          primary: Colors.transparent,
                           onPrimary: Colors.white,
                         ),
                       ),
@@ -417,6 +428,23 @@ class _UserInformationState extends State<UserInformation> {
                   ],
                 ),
               ),
+            ),
+          ),
+          // Invisible ElevatedButton in the bottom right corner
+          Positioned(
+            bottom: 20, // Adjust the bottom margin as needed
+            right: 20, // Adjust the right margin as needed
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return const EmergencyContact(title: 'EmergencyContact');
+                }));
+              }, // Fixed the missing parenthesis here
+              style: ElevatedButton.styleFrom(
+                primary: Colors.transparent,
+                onPrimary: Colors.transparent,
+              ),
+              child: null,
             ),
           ),
         ],
@@ -430,11 +458,15 @@ class _UserInformationState extends State<UserInformation> {
 
 
 
+
+
+
 //PERSONAL INFO 2
 //PERSONAL INFO 2
 //PERSONAL INFO 2
 //PERSONAL INFO 2
 
+// User Information 1 Page
 class UserInformation1 extends StatefulWidget {
   const UserInformation1({Key? key, required this.title}) : super(key: key);
   final String title;
@@ -444,28 +476,25 @@ class UserInformation1 extends StatefulWidget {
 }
 
 class _UserInformation1State extends State<UserInformation1> {
-  // TextEditingControllers to retrieve the current value of TextFormFields
   final TextEditingController _sexController = TextEditingController();
   final TextEditingController _raceController = TextEditingController();
 
   @override
   void dispose() {
-    // Dispose the controllers when the widget is disposed
     _sexController.dispose();
     _raceController.dispose();
     super.dispose();
   }
 
   void _handleSubmit() {
-    // Retrieve the values from the controllers
     String sex = _sexController.text;
     String race = _raceController.text;
 
-    // Use the values as needed
-    print('Name: $sex, Email: $race');
+    print('Sex: $sex, Race: $race');
 
-    // Add your logic to handle the submitted data
+    // Handle submitted data
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -489,12 +518,11 @@ class _UserInformation1State extends State<UserInformation1> {
               ),
             ),
             const SizedBox(height: 30),
-            
             ElevatedButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return const UserInformation2(title: 'UserInformation2');
-              }));
+                  return const UserInformation2(title: 'UserInformation2');
+                }));
               },
               child: const Text("Continue"),
             ),
@@ -505,12 +533,7 @@ class _UserInformation1State extends State<UserInformation1> {
   }
 }
 
-
-//PERSONAL INFO 3
-//PERSONAL INFO 3
-//PERSONAL INFO 3
-//PERSONAL INFO 3
-
+// User Information 2 Page
 class UserInformation2 extends StatefulWidget {
   const UserInformation2({Key? key, required this.title}) : super(key: key);
   final String title;
@@ -520,14 +543,12 @@ class UserInformation2 extends StatefulWidget {
 }
 
 class _UserInformation2State extends State<UserInformation2> {
-  // TextEditingControllers to retrieve the current value of TextFormFields
   final TextEditingController _heightController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _weightController = TextEditingController();
 
   @override
   void dispose() {
-    // Dispose the controllers when the widget is disposed
     _heightController.dispose();
     _emailController.dispose();
     _weightController.dispose();
@@ -535,15 +556,14 @@ class _UserInformation2State extends State<UserInformation2> {
   }
 
   void _handleSubmit() {
-    // Retrieve the values from the controllers
-    String height= _heightController.text;
+    String height = _heightController.text;
     String email = _emailController.text;
     String weight = _weightController.text;
 
-    // Use the values as needed
-    print('Name: $height, Email: $email, Weight: $weight');
-    // Add your logic to handle the submitted data
+    print('Height: $height, Email: $email, Weight: $weight');
+    // Handle submitted data
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -567,7 +587,7 @@ class _UserInformation2State extends State<UserInformation2> {
               ),
             ),
             TextFormField(
-              controller: _emailController,
+              controller: _weightController,
               decoration: const InputDecoration(
                 hintText: 'Please enter your weight:',
               ),
@@ -576,8 +596,8 @@ class _UserInformation2State extends State<UserInformation2> {
             ElevatedButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return const MyHomePage(title: 'MyHomePage');
-              }));
+                  return const MyHomePage(title: 'MyHomePage');
+                }));
               },
               child: const Text("Continue"),
             ),
@@ -587,6 +607,8 @@ class _UserInformation2State extends State<UserInformation2> {
     );
   }
 }
+
+// Emergency Contact Page
 class EmergencyContact extends StatefulWidget {
   const EmergencyContact({Key? key, required this.title}) : super(key: key);
   final String title;
@@ -596,14 +618,12 @@ class EmergencyContact extends StatefulWidget {
 }
 
 class _EmergencyContactState extends State<EmergencyContact> {
-  // TextEditingControllers to retrieve the current value of TextFormFields
   final TextEditingController _ecNameController = TextEditingController();
   final TextEditingController _ecEmailController = TextEditingController();
   final TextEditingController _ecPhoneController = TextEditingController();
 
   @override
   void dispose() {
-    // Dispose the controllers when the widget is disposed
     _ecNameController.dispose();
     _ecEmailController.dispose();
     _ecPhoneController.dispose();
@@ -611,15 +631,14 @@ class _EmergencyContactState extends State<EmergencyContact> {
   }
 
   void _handleSubmit() {
-    // Retrieve the values from the controllers
-    String ecName= _ecNameController.text;
+    String ecName = _ecNameController.text;
     String ecEmail = _ecEmailController.text;
     String ecPhone = _ecPhoneController.text;
 
-    // Use the values as needed
-    print('Name: $ecName, Email: $ecEmail, Weight: $ecPhone');
-    // Add your logic to handle the submitted data
+    print('Emergency Contact Name: $ecName, Email: $ecEmail, Phone: $ecPhone');
+    // Handle submitted data
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -652,8 +671,8 @@ class _EmergencyContactState extends State<EmergencyContact> {
             ElevatedButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return const MyHomePage(title: 'MyHomePage');
-              }));
+                  return const MyHomePage(title: 'MyHomePage');
+                }));
               },
               child: const Text("Continue"),
             ),
